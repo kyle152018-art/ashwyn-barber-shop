@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashwyn's Barber Shop - Book Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: #d4af37;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .booking-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .service-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .service-option {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-option:hover {
+            border-color: #d4af37;
+            transform: translateY(-5px);
+        }
+
+        .service-option.selected {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .service-price {
+            font-size: 1.5em;
+            color: #d4af37;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .service-duration {
+            color: #ccc;
+            font-size: 0.9em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+        }
+
+        .form-group input::placeholder {
+            color: #ccc;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #d4af37;
+            color: black;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #e6c550;
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 40px;
+            background: rgba(76, 175, 80, 0.2);
+            border-radius: 15px;
+            border: 2px solid #4CAF50;
+        }
+
+        @media (max-width: 768px) {
+            .service-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>💈 Ashwyn's Barber Shop</h1>
+            <p>Professional Barber Services in Port Elizabeth</p>
+        </div>
+
+        <!-- Booking Form -->
+        <div class="booking-card" id="bookingForm">
+            <h2>Book Your Appointment</h2>
+            <p style="margin-bottom: 20px; opacity: 0.8;">Select your service and preferred time</p>
+
+            <!-- Service Selection -->
+            <div class="form-group">
+                <label>Choose Your Service:</label>
+                <div class="service-options">
+                    <div class="service-option" onclick="selectService('haircut')" data-service="haircut">
+                        <h3>✂️ Haircut</h3>
+                        <div class="service-price">R120</div>
+                        <div class="service-duration">30 minutes</div>
+                    </div>
+                    
+                    <div class="service-option" onclick="selectService('beard')" data-service="beard">
+                        <h3>🧔 Beard Trim</h3>
+                        <div class="service-price">R80</div>
+                        <div class="service-duration">20 minutes</div>
+                    </div>
+                    
+                    <div class="service-option" onclick="selectService('both')" data-service="both">
+                        <h3>👑 Haircut + Beard</h3>
+                        <div class="service-price">R180</div>
+                        <div class="service-duration">45 minutes</div>
+                    </div>
+                    
+                    <div class="service-option" onclick="selectService('kids')" data-service="kids">
+                        <h3>👦 Kids Cut</h3>
+                        <div class="service-price">R90</div>
+                        <div class="service-duration">25 minutes</div>
+                    </div>
+
+                    <div class="service-option" onclick="selectService('fade')" data-service="fade">
+                        <h3>🔥 Skin Fade</h3>
+                        <div class="service-price">R150</div>
+                        <div class="service-duration">35 minutes</div>
+                    </div>
+
+                    <div class="service-option" onclick="selectService('beard-design')" data-service="beard-design">
+                        <h3>🎨 Beard Design</h3>
+                        <div class="service-price">R100</div>
+                        <div class="service-duration">25 minutes</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Details -->
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" placeholder="076 123 4567" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" placeholder="lippertashwyn@gmail.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Preferred Date:</label>
+                <input type="date" id="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Preferred Time:</label>
+                <select id="time" required>
+                    <option value="">Select time</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="09:30">09:30 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="10:30">10:30 AM</option>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="11:30">11:30 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="12:30">12:30 PM</option>
+                    <option value="13:00">01:00 PM</option>
+                    <option value="13:30">01:30 PM</option>
+                    <option value="14:00">02:00 PM</option>
+                    <option value="14:30">02:30 PM</option>
+                    <option value="15:00">03:00 PM</option>
+                    <option value="15:30">03:30 PM</option>
+                    <option value="16:00">04:00 PM</option>
+                    <option value="16:30">04:30 PM</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Special Requests (Optional):</label>
+                <input type="text" id="notes" placeholder="Any specific style or preferences?">
+            </div>
+
+            <button type="submit" class="submit-btn" onclick="submitBooking()">Book Appointment</button>
+        </div>
+
+        <!-- Success Message (Hidden by default) -->
+        <div class="success-message hidden" id="successMessage">
+            <h2>✅ Booking Confirmed!</h2>
+            <p>Thank you for your booking! Ashwyn will contact you shortly to confirm your appointment.</p>
+            <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.8;">
+                You'll receive a confirmation SMS/Email soon.
+            </p>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="contact-info">
+            <h3>📍 Location</h3>
+            <p>Port Elizabeth, South Africa</p>
+            
+            <h3 style="margin-top: 15px;">🕒 Business Hours</h3>
+            <p>Mon-Fri: 9:00 AM - 5:00 PM</p>
+            <p>Sat: 8:00 AM - 1:00 PM</p>
+            <p>Sun: Closed</p>
+            
+            <h3 style="margin-top: 15px;">📞 Contact</h3>
+            <p>Ashwyn: 076 123 4567</p>
+            <p>Email: lippertashwyn@gmail.com</p>
+        </div>
+    </div>
+
+    <script>
+        let selectedService = '';
+
+        function selectService(service) {
+            selectedService = service;
+            
+            // Remove selected class from all options
+            document.querySelectorAll('.service-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            event.target.closest('.service-option').classList.add('selected');
+        }
+
+        function submitBooking() {
+            // Get form values
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const notes = document.getElementById('notes').value;
+
+            // Simple validation
+            if (!selectedService || !name || !phone || !email || !date || !time) {
+                alert('Please fill in all required fields and select a service.');
+                return;
+            }
+
+            // Create booking summary
+            const bookingData = {
+                service: selectedService,
+                name: name,
+                phone: phone,
+                email: email,
+                date: date,
+                time: time,
+                notes: notes,
+                timestamp: new Date().toLocaleString()
+            };
+
+            // In a real system, you would send this data to a server
+            // For now, we'll just show success message and log to console
+            console.log('Booking Received:', bookingData);
+            
+            // Show success message
+            document.getElementById('bookingForm').classList.add('hidden');
+            document.getElementById('successMessage').classList.remove('hidden');
+
+            // Optional: Send WhatsApp message (uncomment to enable)
+            // const whatsappMessage = `New Booking:%0A%0AService: ${getServiceName(selectedService)}%0AName: ${name}%0APhone: ${phone}%0ADate: ${date}%0ATime: ${time}%0ANotes: ${notes || 'None'}`;
+            // window.open(`https://wa.me/27612345678?text=${whatsappMessage}`, '_blank');
+        }
+
+        function getServiceName(serviceCode) {
+            const services = {
+                'haircut': 'Haircut - R120',
+                'beard': 'Beard Trim - R80',
+                'both': 'Haircut + Beard - R180',
+                'kids': 'Kids Cut - R90',
+                'fade': 'Skin Fade - R150',
+                'beard-design': 'Beard Design - R100'
+            };
+            return services[serviceCode] || 'Unknown Service';
+        }
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').min = today;
+    </script>
+</body>
+</html>
