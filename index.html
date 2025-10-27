@@ -151,6 +151,15 @@
             border: 2px solid #4CAF50;
         }
 
+        .business-hours {
+            margin: 15px 0;
+        }
+
+        .business-hours p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
         @media (max-width: 768px) {
             .service-options {
                 grid-template-columns: 1fr;
@@ -225,7 +234,7 @@
 
             <div class="form-group">
                 <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" placeholder="076 123 4567" required>
+                <input type="tel" id="phone" placeholder="+27 62 655 1574" required>
             </div>
 
             <div class="form-group">
@@ -284,13 +293,19 @@
             <p>Port Elizabeth, South Africa</p>
             
             <h3 style="margin-top: 15px;">🕒 Business Hours</h3>
-            <p>Mon-Fri: 9:00 AM - 5:00 PM</p>
-            <p>Sat: 8:00 AM - 1:00 PM</p>
-            <p>Sun: Closed</p>
+            <div class="business-hours">
+                <p><strong>Monday:</strong> 9:00 AM - 5:00 PM</p>
+                <p><strong>Tuesday:</strong> 9:00 AM - 5:00 PM</p>
+                <p><strong>Wednesday:</strong> 9:00 AM - 5:00 PM</p>
+                <p><strong>Thursday:</strong> 9:00 AM - 5:00 PM</p>
+                <p><strong>Friday:</strong> 9:00 AM - 5:00 PM</p>
+                <p><strong>Saturday:</strong> 8:00 AM - 1:00 PM</p>
+                <p><strong>Sunday:</strong> Closed</p>
+            </div>
             
-            <h3 style="margin-top: 15px;">📞 Contact</h3>
-            <p>Ashwyn: 076 123 4567</p>
-            <p>Email: lippertashwyn@gmail.com</p>
+            <h3 style="margin-top: 15px;">📞 Contact Ashwyn</h3>
+            <p><strong>Phone:</strong> +27 62 655 1574</p>
+            <p><strong>Email:</strong> lippertashwyn@gmail.com</p>
         </div>
     </div>
 
@@ -346,7 +361,7 @@
 
             // Optional: Send WhatsApp message (uncomment to enable)
             // const whatsappMessage = `New Booking:%0A%0AService: ${getServiceName(selectedService)}%0AName: ${name}%0APhone: ${phone}%0ADate: ${date}%0ATime: ${time}%0ANotes: ${notes || 'None'}`;
-            // window.open(`https://wa.me/27612345678?text=${whatsappMessage}`, '_blank');
+            // window.open(`https://wa.me/27626551574?text=${whatsappMessage}`, '_blank');
         }
 
         function getServiceName(serviceCode) {
@@ -364,6 +379,22 @@
         // Set minimum date to today
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('date').min = today;
+
+        // Remove Saturday afternoon times (after 1 PM)
+        document.getElementById('time').addEventListener('change', function() {
+            const selectedDate = new Date(document.getElementById('date').value);
+            const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 6 = Saturday
+            
+            if (dayOfWeek === 6) { // Saturday
+                const selectedTime = this.value;
+                const timeValue = parseInt(selectedTime.split(':')[0]);
+                
+                if (timeValue >= 13) { // After 1 PM
+                    alert('Saturday bookings are only available until 1:00 PM. Please select an earlier time.');
+                    this.value = '';
+                }
+            }
+        });
     </script>
 </body>
 </html>
